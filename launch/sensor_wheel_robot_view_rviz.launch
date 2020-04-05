@@ -2,8 +2,13 @@
 <launch>
 	<arg name="model" />
 	<param name="robot_description" command="$(find xacro)/xacro $(find robot_gazebo)/urdf/sensor_wheel_robot.xacro" />
-	<param name="use_gui" value="true"/>
+
+	<!-- Map server -->
+	<arg name="map_file" default="$(find robot_gazebo)/maps/diff_world_obstacles.yaml"/>
+	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+	<!-- <param name="use_gui" value="true"/> -->
 	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
-	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
-	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find robot_gazebo)/urdf.rviz" required="true" />
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find robot_gazebo)/cfg/rviz_config.rviz" required="true" />
 </launch>
